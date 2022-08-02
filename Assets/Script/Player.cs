@@ -23,8 +23,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] bool isFireReady = true;
     float fireDelay;
-
     bool isReload;
+
+    public Camera followCamera;
 
     void Awake()
     {
@@ -61,6 +62,22 @@ public class Player : MonoBehaviour
         //나아가는 방향을 바라보게 함
         transform.LookAt(transform.position + moveVec);
 
+        //공격버튼을 눌렀을때 (마우스에 의한 회전)
+        if (playerInput.fDown) 
+        {
+            //마우스가 위치한곳에 Ray를 쏴줌
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
+
+            //레이가 닿는곳을 레이캐스트에 넣어줌 레이길이는 100
+            if (Physics.Raycast(ray, out rayHit, 100))   
+            {
+                Vector3 nextVec = rayHit.point - transform.position; //레이가 닿은 지점에서 플레이어 위치를 빼줌
+                //높이는 0으로 잡아 캐릭터가 높은 물체를 바라보더라도 기울어지는것을 방지
+                nextVec.y = 0; 
+                transform.LookAt(transform.position + nextVec);
+            }
+        }
         //이동하는값이 0이 아니면 달리는 애니메이션 작동
         anim.SetBool("isRun", moveVec != Vector3.zero);
         //걷기 버튼 활성화시 걷는 애니메이션 작동
@@ -116,7 +133,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Dodge() //회피 함수
+    IEnumerator Dodge() //회피 함수
     {
         // 움직이는 상황에서 회피키를 누르고 isDodge와 isSwap이 false면 실행
         if (playerInput.dDown && moveVec != Vector3.zero && !isDodge && !isSwap && !isReload)
@@ -125,8 +142,10 @@ public class Player : MonoBehaviour
             dodgeVec = moveVec; //회피 방향은 이동중인 방향 
             speed *= 2; //스피드 2배
             anim.SetTrigger("doDodge"); //회피 애니메이션 작동
-            Invoke("Delay", 0.5f);//
-            speed *= 0.5f; //회피시 2배로 만든 속도를 0.5를 곱해 원래 이동속도로 복구
+            yield return new WaitForSeconds(0.5f);// 0.5초 후
+            speed /= 2f; //회피시 2배로 만든 속도를 기존 이동속도로 복구
+            isDodge = false; // 회피끝
+
 
         }
     }
@@ -208,7 +227,6 @@ public class Player : MonoBehaviour
 
     void Delay() //딜레이 함수
     {
-        isDodge = false; //회피가 가능한 상태로 변경
         isSwap = false; //무기 변경이 가능한 상태로 변경
     }
 

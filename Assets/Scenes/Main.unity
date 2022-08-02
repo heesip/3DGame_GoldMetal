@@ -1863,7 +1863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   damage: 0
-  rate: 0.7
+  rate: 0.5
   meleeArea: {fileID: 0}
   trailRenderer: {fileID: 0}
   maxAmmo: 9
@@ -2345,6 +2345,7 @@ MonoBehaviour:
   equipWeapon: {fileID: 0}
   isSwap: 0
   isFireReady: 1
+  followCamera: {fileID: 963194227}
 --- !u!114 &5903297864759275044
 MonoBehaviour:
   m_ObjectHideFlags: 0

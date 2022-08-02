@@ -10,10 +10,11 @@ public class Weapon : MonoBehaviour
     public float rate; //공격속도
     public BoxCollider meleeArea; //근접공격 범위
     public TrailRenderer trailRenderer; //공격 효과
+    public int maxAmmo; //전체 탄약 
+    public int curAmmo; //현재 탄약
 
     public Transform bulletPos; //총알이 생성되는 위치
     public GameObject bullet; //총알 프리팹
-
     public Transform bulletCasePos; //탄피 생성되는 위치
     public GameObject bulletCase; //탄피 프리팹
 
@@ -25,8 +26,9 @@ public class Weapon : MonoBehaviour
             StopCoroutine(Swing()); 
             StartCoroutine(Swing());
         }
-        else if (type == Type.Range)
+        else if (type == Type.Range && curAmmo > 0) //원거리 타입에 현재 탄약이 1개라도 있으면
         {
+            curAmmo--;
             //샷 코루틴 함수 실행
             StopCoroutine(Shot());
             StartCoroutine(Shot());

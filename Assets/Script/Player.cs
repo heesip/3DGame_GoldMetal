@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField] bool isFireReady = true;
     float fireDelay;
 
+    bool isReload;
+
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
@@ -37,9 +39,10 @@ public class Player : MonoBehaviour
         Move();
         Jump();
         Attack();
-        StartCoroutine("Dodge");
         GetItem();
         Swap();
+        StartCoroutine("Dodge");
+        StartCoroutine("Reload");
     }
 
     void Move() //움직임 함수
@@ -49,7 +52,7 @@ public class Player : MonoBehaviour
 
         if (isDodge)//회피중인 상황이면
             moveVec = dodgeVec; //이동방향을 회피방향으로 고정
-        else if (isSwap || !isFireReady)//무기 변경중인 상황이면
+        else if (isSwap || isReload || !isFireReady )//무기 변경중이거나 재장전 중이거나 공격중이라면
             moveVec = Vector3.zero; //움직임 멈춤
 
         //플레이어 위치는 이동하는 값과 스피드를 받아서 반형한다. 걷기 버튼 누르면 0.35배 속도 아니라면 원래 속도로
@@ -68,7 +71,7 @@ public class Player : MonoBehaviour
     void Jump() //점프 함수
     {
         //점프키를 누르고 isJump와 isDodge 그리고 isSwap이 false면 실행
-        if (playerInput.jDown && !isJump && !isDodge && !isSwap)
+        if (playerInput.jDown && !isJump && !isDodge && !isSwap && !isReload)
         {
             playerRigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse); //플레이어를 위쪽 방향으로 힘을 가해 점프시킴
             anim.SetTrigger("doJump"); //점프애니메이션 작동
@@ -84,21 +87,39 @@ public class Player : MonoBehaviour
 
         fireDelay += Time.deltaTime; //공격 딜레이는 실제시간을 받아온다
         //공격 준비는 무기에 할당된 공격속도를 공격딜레이가 넘기면 활성화 
-        isFireReady = equipWeapon.rate < fireDelay; 
+        isFireReady = equipWeapon.rate < fireDelay;
         //공격버튼을 누를때 공격 준비가 되어있는 상황 + 회피와 무기 교체를 하고있지 않으면
-        if (playerInput.fDown && isFireReady && !isDodge && !isSwap)
+        if (playerInput.fDown && isFireReady && !isDodge && !isSwap && !isReload)
         {
             equipWeapon.Use(); //무기 사용
             //무기 타입이 근접 무기라면 스윙 애니메이션 원거리 무기라면 샷 애니메이션 
-            anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ?"doSwing" : "doShot"); 
+            anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
             fireDelay = 0; //딜레이 수치를 0으로 만들어 공격 준비 상태를 비활성화 
+        }
+    }
+
+    IEnumerator Reload()
+    {
+        if (equipWeapon == null) yield break; //장착된 무기가 없다면 실행 X
+        if (equipWeapon.type == Weapon.Type.Melee) yield break; //장착한 무기가 근접 무기면 실행 X
+        if (inven.ammo == 0) yield break; //인벤토리에 총알이 없으면 실행 X
+        //장전키가 입력되었을때 점프, 회피, 무기교체, 재장전 중이 아니고 공격이 준비된 상태일때
+        if (playerInput.rDown && !isJump && !isDodge && !isSwap && isFireReady && !isReload)
+        {
+            anim.SetTrigger("doReload"); //재장전 애니메이션 실행
+            isReload = true; //재장전 중
+            yield return new WaitForSeconds(2.5f); //2.5초 후
+            int reAmmo = inven.ammo < equipWeapon.maxAmmo ? inven.ammo : equipWeapon.maxAmmo; 
+            equipWeapon.curAmmo = reAmmo;
+            inven.ammo -= reAmmo;
+            isReload = false; //재장전 끝
         }
     }
 
     void Dodge() //회피 함수
     {
         // 움직이는 상황에서 회피키를 누르고 isDodge와 isSwap이 false면 실행
-        if (playerInput.dDown && moveVec != Vector3.zero && !isDodge && !isSwap)
+        if (playerInput.dDown && moveVec != Vector3.zero && !isDodge && !isSwap && !isReload)
         {
             isDodge = true; //isDodge 활성화시켜 점프와 회피 연속사용을 막고 회피방향 고정시킴
             dodgeVec = moveVec; //회피 방향은 이동중인 방향 
@@ -113,7 +134,7 @@ public class Player : MonoBehaviour
     void GetItem() //아이템 획득 함수
     {
         //근처에 오브젝트가 있고 점프, 회피하는 상황이 아닐때 획득 키를 누르면  
-        if (playerInput.gDown && nearObject != null && !isJump && !isDodge && !isSwap)
+        if (playerInput.gDown && nearObject != null && !isJump && !isDodge && !isSwap && !isReload)
         {
             Item item = nearObject.GetComponent<Item>();
 
@@ -169,7 +190,7 @@ public class Player : MonoBehaviour
         if (playerInput.sDown3) weaponIndex = 2; //무기변경 버튼 3번을 누르면 무기인덱스를 2번으로 변경
 
         //특정 무기가 있어 특정 번호를 누를때 점프, 회피, 무기 변경중이 아니면
-        if ((playerInput.sDown1 || playerInput.sDown2 || playerInput.sDown3) && !isJump && !isDodge && !isSwap)
+        if ((playerInput.sDown1 || playerInput.sDown2 || playerInput.sDown3) && !isJump && !isDodge && !isSwap && !isReload)
         {
             if (equipWeapon != null) //장착중인 무기가 있다면
                 equipWeapon.gameObject.SetActive(false); //현재 들고 있는 무기 비활성화

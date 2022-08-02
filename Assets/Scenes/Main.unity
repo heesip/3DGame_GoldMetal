@@ -423,7 +423,7 @@ GameObject:
   - component: {fileID: 250827804}
   - component: {fileID: 250827803}
   - component: {fileID: 250827807}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 659704429}
   - component: {fileID: 659704428}
   - component: {fileID: 659704432}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wall (2)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -962,7 +962,7 @@ GameObject:
   - component: {fileID: 851704094}
   - component: {fileID: 851704093}
   - component: {fileID: 851704097}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wall (3)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1377,7 +1377,7 @@ GameObject:
   - component: {fileID: 1021975048}
   - component: {fileID: 1021975047}
   - component: {fileID: 1021975051}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wall
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -1754,7 +1754,7 @@ GameObject:
   - component: {fileID: 1561780170}
   - component: {fileID: 1561780169}
   - component: {fileID: 1561780173}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wall (1)
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -2462,6 +2462,7 @@ MonoBehaviour:
   isSwap: 0
   isFireReady: 1
   followCamera: {fileID: 963194227}
+  isBorder: 0
 --- !u!114 &5903297864759275044
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -46,6 +46,16 @@ public class Player : MonoBehaviour
         StartCoroutine("Reload");
     }
 
+    private void FixedUpdate()
+    {
+        FreezeRotation();
+    }
+
+    void FreezeRotation()
+    {
+        playerRigid.angularVelocity = Vector3.zero; //플레이어 회전 가속도 0으로 잡아줌
+    }
+
     void Move() //움직임 함수
     {
         //x축, z축, 대각선으로 이동할때 같은 속도를 유지하게함
@@ -70,14 +80,17 @@ public class Player : MonoBehaviour
             RaycastHit rayHit;
 
             //레이가 닿는곳을 레이캐스트에 넣어줌 레이길이는 100
-            if (Physics.Raycast(ray, out rayHit, 100))   
-            {
-                Vector3 nextVec = rayHit.point - transform.position; //레이가 닿은 지점에서 플레이어 위치를 빼줌
+            if (Physics.Raycast(ray, out rayHit, 100))
+            { 
+                //레이가 닿은 지점에서 플레이어 위치를 빼서 nextVec에 값을 넣어줌
+                Vector3 nextVec = rayHit.point - transform.position;
                 //높이는 0으로 잡아 캐릭터가 높은 물체를 바라보더라도 기울어지는것을 방지
-                nextVec.y = 0; 
-                transform.LookAt(transform.position + nextVec);
+                nextVec.y = 0;
+                //nextVec 방향에 맞게 캐릭터가 바라보게 만듬
+                transform.LookAt(transform.position + nextVec); 
             }
         }
+
         //이동하는값이 0이 아니면 달리는 애니메이션 작동
         anim.SetBool("isRun", moveVec != Vector3.zero);
         //걷기 버튼 활성화시 걷는 애니메이션 작동
@@ -126,9 +139,10 @@ public class Player : MonoBehaviour
             anim.SetTrigger("doReload"); //재장전 애니메이션 실행
             isReload = true; //재장전 중
             yield return new WaitForSeconds(2.5f); //2.5초 후
-            int reAmmo = inven.ammo < equipWeapon.maxAmmo ? inven.ammo : equipWeapon.maxAmmo; 
-            equipWeapon.curAmmo = reAmmo;
-            inven.ammo -= reAmmo;
+            //장전 탄약 = 인벤토리 탄 갯수가 장전가능한 탄 갯수보다 적으면 인벤토리에 있는 탄 전부, 아니라면 장전가능한 탄 갯수
+            int reAmmo = inven.ammo < equipWeapon.maxAmmo ? inven.ammo : equipWeapon.maxAmmo;  
+            equipWeapon.curAmmo = reAmmo; //장착된 총 현재 탄약을 장전 탄약으로 만듬
+            inven.ammo -= reAmmo; //인벤토리에서 탄약 갯수를 장전탄약 갯수 만큼 빼줌
             isReload = false; //재장전 끝
         }
     }
@@ -145,8 +159,6 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(0.5f);// 0.5초 후
             speed /= 2f; //회피시 2배로 만든 속도를 기존 이동속도로 복구
             isDodge = false; // 회피끝
-
-
         }
     }
 

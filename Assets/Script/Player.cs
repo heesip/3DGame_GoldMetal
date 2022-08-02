@@ -64,7 +64,8 @@ public class Player : MonoBehaviour
 
     void StopToWall()
     {
-        Debug.DrawRay(transform.position, transform.forward * 5, Color.red);
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.red); //레이 길이 체크용
+        //레이캐스트 플레이어 앞쪽에 5길이 만큼 쏴주고 벽을 감지히면 isBorder = true
         isBorder = Physics.Raycast(transform.position,
                                    transform.forward, 5,
                                    LayerMask.GetMask("Wall"));
@@ -82,7 +83,7 @@ public class Player : MonoBehaviour
             moveVec = Vector3.zero; //움직임 멈춤
 
         //플레이어 위치는 이동하는 값과 스피드를 받아서 반형한다. 걷기 버튼 누르면 0.35배 속도 아니라면 원래 속도로
-        if(!isBorder)//벽에 닿으면 회전만 가능    
+        if(!isBorder)//벽에 닿지 않으면 움직이게  
             transform.position += moveVec * speed * (playerInput.wDown ? 0.35f : 1f) * Time.deltaTime;
 
         //나아가는 방향을 바라보게 함

@@ -6,7 +6,7 @@ public class Inven : MonoBehaviour
 {
     public GameObject[] weapons; //장착 가능한 무기
     public bool[] hasWeapons; //가지고 있는 무기
-    public GameObject[] grenades; //
+    public GameObject hasgrenade; //사용할 수류탄
 
     public int ammo;    //총알
     public int coin;    //동전 

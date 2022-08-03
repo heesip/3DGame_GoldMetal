@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
     public bool sDown3; //스왑3 버튼 입력 값
     public bool fDown; //공격 버튼 입력 값
     public bool rDown; //장전 버튼 입력 값
+    public bool f2Down; //공격2 버튼 입력 값
 
 
 
@@ -32,5 +33,7 @@ public class PlayerInput : MonoBehaviour
         sDown3 = Input.GetButtonDown("Swap3"); //스왑3 버튼 누르면 활성화
         fDown = Input.GetButton("Fire1"); //공격 버튼 누르면 활성화
         rDown = Input.GetButton("Reload"); //장전 버튼 누르면 활성화
+        f2Down = Input.GetButtonDown("Fire2"); //공격2 버튼 누르면 활성화
+
     }
 }

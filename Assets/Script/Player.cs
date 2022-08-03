@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
         Swap();
         StartCoroutine("Dodge");
         StartCoroutine("Reload");
+        Throw();
     }
 
     private void FixedUpdate()
@@ -288,5 +289,34 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Throw() //수류탄 투척 함수
+    {
+        if (inven.grenade == 0) return; //수류탄이 없으면 실행 X
+        
+        if(playerInput.f2Down && !isReload && !isSwap && !isDodge) //수류탄 투척 전용키를 눌렀을때 재장전, 무기교체, 회피상황이 아닐때
+        {
+            //마우스가 위치한곳에 Ray를 쏴줌
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayHit;
 
+            //레이가 닿는곳을 레이캐스트에 넣어줌 레이길이는 100
+            if (Physics.Raycast(ray, out rayHit, 100))
+            {
+                //레이가 닿은 지점에서 플레이어 위치를 빼서 nextVec에 값을 넣어줌
+                Vector3 nextVec = rayHit.point - transform.position;
+                //높이는 2.5으로 잡아 투척을 구현
+                nextVec.y = 17f;
+                //만들어둔 수류탄이 가지고 있는 위치값 회전값을 잡아줌
+                GameObject instantGreanade = Instantiate(inven.hasgrenade, transform.position, transform.rotation); 
+                //수류탄이 가지고 있는 리지드 바디를 통해 물체에게 힘을 가해 날아가게 그리고 회전하게 만들어줌
+                Rigidbody rigidGrenade = instantGreanade.GetComponent<Rigidbody>(); 
+                rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
+                rigidGrenade.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+
+                //인벤에서 수류탄 하나 소모
+                inven.grenade--;
+                
+            }
+        }
+    }
 }

@@ -29,12 +29,19 @@ public class Player : MonoBehaviour
 
     public bool isBorder;
 
+    public int health;
+    public int maxHealth;
+    bool isDamage;
+    MeshRenderer[] meshs;
+
+
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         playerInput = GetComponent<PlayerInput>();
         playerRigid = GetComponent<Rigidbody>();
         inven = GetComponent<Inven>();
+        meshs = GetComponentsInChildren<MeshRenderer>();
     }
 
     void Update()
@@ -259,35 +266,6 @@ public class Player : MonoBehaviour
         isSwap = false; //무기 변경이 가능한 상태로 변경
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        //플레이어가 무기 혹은 아이템 태그를 가진 오브젝트 범위안에 있다면
-        if (other.tag == "Weapon" || other.tag == "Item")
-        {
-            nearObject = other.gameObject; //근처에 있는 아이템을 감지
-            Debug.Log(nearObject); //어떤 아이템인지 기록을 엔진에 남겨줌
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        //플레이어가 무기 혹은 아이템 태그를 가진 오브젝트 범위 안에서 벗어났다면
-        if (other.tag == "Weapon" || other.tag == "Item")
-        {
-            nearObject = null; //플레이어 근처에 있는 아이템감지를 멈춤
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision) //콜라이더와 충돌하면
-    {
-
-        anim.SetBool("isJump", false); //애니메이션에 isJump를 활성화 시켜서 착지 애니메이션이 이어지게 만들어줌 
-        if (collision.gameObject.tag == "Floor") //충돌한 오브젝트 테그가 Floor면  
-        {
-            isJump = false; //isJump를 false로 돌려 점프가 가능한 상태로 만듬
-        }
-    }
-
     void Throw() //수류탄 투척 함수
     {
         if (inven.grenade == 0) return; //수류탄이 없으면 실행 X
@@ -318,4 +296,65 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    IEnumerator OnDamaged() //피격 함수 0.5초 무적시간
+    {
+        isDamage = true;
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.yellow;
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        isDamage = false;
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.white;
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "EnemyBullet")
+        {
+            if (!isDamage) //피격가능 상황이면
+            {
+               Bullet enemyBullet = other.GetComponent<Bullet>();
+               health -= enemyBullet.damage; //몬스터 데미지만큼 체력감소
+               StartCoroutine(OnDamaged()); 
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        //플레이어가 무기 혹은 아이템 태그를 가진 오브젝트 범위안에 있다면
+        if (other.tag == "Weapon" || other.tag == "Item")
+        {
+            nearObject = other.gameObject; //근처에 있는 아이템을 감지
+            Debug.Log(nearObject); //어떤 아이템인지 기록을 엔진에 남겨줌
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //플레이어가 무기 혹은 아이템 태그를 가진 오브젝트 범위 안에서 벗어났다면
+        if (other.tag == "Weapon" || other.tag == "Item")
+        {
+            nearObject = null; //플레이어 근처에 있는 아이템감지를 멈춤
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision) //콜라이더와 충돌하면
+    {
+
+        anim.SetBool("isJump", false); //애니메이션에 isJump를 활성화 시켜서 착지 애니메이션이 이어지게 만들어줌 
+        if (collision.gameObject.tag == "Floor") //충돌한 오브젝트 테그가 Floor면  
+        {
+            isJump = false; //isJump를 false로 돌려 점프가 가능한 상태로 만듬
+        }
+    }
+
 }

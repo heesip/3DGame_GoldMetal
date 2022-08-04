@@ -2287,6 +2287,31 @@ MonoBehaviour:
   bullet: {fileID: 1199084954428258392, guid: 09f32937410435940b555cd61179d550, type: 3}
   bulletCasePos: {fileID: 891877658}
   bulletCase: {fileID: 2368059995575804416, guid: 31c113403e5701445a29b1cf8926d24e, type: 3}
+--- !u!1 &1653302418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5749865478261324880, guid: 464cc7c4f7ea10b47a36d7848aa9ca9a, type: 3}
+  m_PrefabInstance: {fileID: 895162220}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1653302420
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653302418}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 01d4018b7fc730b42bdb51b8c29205c1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1888566651
 PrefabInstance:
   m_ObjectHideFlags: 0

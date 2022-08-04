@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
         meleeArea.enabled = true; //공격범위 활성화
         trailRenderer.enabled = true; //이팩트 활성화
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.4f);
         meleeArea.enabled = false; //공격범위 비활성화
 
         yield return new WaitForSeconds(0.3f);

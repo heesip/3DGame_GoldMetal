@@ -8,11 +8,13 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //최대 체력
     public int curHealth; //현재 체력
     public Transform target; //타겟
-
+    public bool isChase; //추적하다
+    
     Rigidbody enemyrigid;
     BoxCollider boxcol;
     Material mat;
     NavMeshAgent nav;
+    Animator anim;
 
 
     private void Awake()
@@ -21,11 +23,36 @@ public class Enemy : MonoBehaviour
         boxcol = GetComponent<BoxCollider>();
         mat = GetComponentInChildren<MeshRenderer>().material;
         nav = GetComponent<NavMeshAgent>();
+        anim = GetComponentInChildren<Animator>();
+        Invoke("ChaseStart", 2); //게임이 시작하고 2초가 지나면 추적
     }
 
     private void Update()
     {
-        nav.SetDestination(target.position); // 타겟을 따라 이동
+        if(isChase)
+            nav.SetDestination(target.position); // 타겟을 따라 이동
+    }
+
+    private void FixedUpdate()
+    {
+        FreezeVelocity(); //충돌시 강제 회전 방지
+    }
+
+    void ChaseStart() //추적 시작 함수
+    {
+        isChase = true;
+        anim.SetBool("isWalk", true);
+    }   
+
+    void FreezeVelocity()
+    {
+        if (isChase) 
+        {
+            enemyrigid.velocity = Vector3.zero; //플레이어 가속도 0으로 잡아줌
+            enemyrigid.angularVelocity = Vector3.zero; //플레이어 회전 가속도 0으로 잡아줌
+        }
+       
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -63,7 +90,11 @@ public class Enemy : MonoBehaviour
         {
             mat.color = Color.gray;  //회색으로 변경
             gameObject.layer = 11; //레이어를 11번(EnemyDead)로 변경
-
+            anim.SetBool("isWalk", false);
+            anim.SetTrigger("doDie");
+            isChase = false;
+            nav.enabled =false;
+            anim.SetTrigger("doDie");
             if (isGrenade) //데미지를 준게 수류탄이면
             {
                 reactVec = reactVec.normalized; //react값이 어느방향이든 같은 값을 가져옴

@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
     void FreezeRotation()
     {
         playerRigid.angularVelocity = Vector3.zero; //플레이어 회전 가속도 0으로 잡아줌
-
     }
 
 

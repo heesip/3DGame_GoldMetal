@@ -1,23 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
     public int maxHealth; //최대 체력
     public int curHealth; //현재 체력
+    public Transform target; //타겟
 
     Rigidbody enemyrigid;
     BoxCollider boxcol;
     Material mat;
+    NavMeshAgent nav;
+
 
     private void Awake()
     {
         enemyrigid = GetComponent<Rigidbody>();
         boxcol = GetComponent<BoxCollider>();
-        mat = GetComponent<MeshRenderer>().material;
+        mat = GetComponentInChildren<MeshRenderer>().material;
+        nav = GetComponent<NavMeshAgent>();
     }
 
+    private void Update()
+    {
+        nav.SetDestination(target.position); // 타겟을 따라 이동
+    }
 
     private void OnTriggerEnter(Collider other)
     {

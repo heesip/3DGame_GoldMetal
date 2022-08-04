@@ -8,13 +8,15 @@ public class Enemy : MonoBehaviour
     public int maxHealth; //최대 체력
     public int curHealth; //현재 체력
     public Transform target; //타겟
+    public BoxCollider meleeArea;//공격 범위
     public bool isChase; //추적하다
-    
+    public bool isAttack; //공격
     Rigidbody enemyrigid;
     BoxCollider boxcol;
     Material mat;
     NavMeshAgent nav;
     Animator anim;
+
 
 
     private void Awake()
@@ -24,18 +26,24 @@ public class Enemy : MonoBehaviour
         mat = GetComponentInChildren<MeshRenderer>().material;
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
+        meleeArea.enabled = false;
+
         Invoke("ChaseStart", 2); //게임이 시작하고 2초가 지나면 추적
     }
 
     private void Update()
     {
-        if(isChase)
+        if(nav.enabled)
+        {
             nav.SetDestination(target.position); // 타겟을 따라 이동
+            nav.isStopped = !isChase;
+        }
     }
 
     private void FixedUpdate()
     {
         FreezeVelocity(); //충돌시 강제 회전 방지
+        Targeting();
     }
 
     void ChaseStart() //추적 시작 함수
@@ -51,8 +59,37 @@ public class Enemy : MonoBehaviour
             enemyrigid.velocity = Vector3.zero; //플레이어 가속도 0으로 잡아줌
             enemyrigid.angularVelocity = Vector3.zero; //플레이어 회전 가속도 0으로 잡아줌
         }
-       
+    }
+    void Targeting()
+    {
+        float targetRadius = 1.5f;
+        float targetRange = 2f;
 
+        RaycastHit[] rayhit =
+            Physics.SphereCastAll(transform.position, targetRadius,
+            transform.forward, targetRange, LayerMask.GetMask("Player"));
+
+        if(rayhit.Length > 0 && !isAttack)
+        {
+            StartCoroutine(Attack());
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        isChase = false;
+        isAttack = true;
+        anim.SetBool("isAttack", true);
+
+        yield return new WaitForSeconds(0.6f);
+        meleeArea.enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        meleeArea.enabled = false;
+        yield return new WaitForSeconds(0.8f);
+
+        anim.SetBool("isAttack", false);
+        isChase = true;
+        isAttack = false;
     }
 
     private void OnTriggerEnter(Collider other)

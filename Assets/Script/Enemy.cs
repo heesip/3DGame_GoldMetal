@@ -130,11 +130,11 @@ public class Enemy : MonoBehaviour
 
             case Type.C:
                 //0.5초 후
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.7f);
                 //미사일 생성 및 발사 
                 GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
                 Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
-                rigidBullet.velocity = transform.forward * 20;
+                rigidBullet.velocity = transform.forward * 50;
                 //2초간 멈춤
                 yield return new WaitForSeconds(2f);
                 break;

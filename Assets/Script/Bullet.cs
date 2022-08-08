@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int damage; //데미지 엔진에서 적용
-
+    public bool isMelee;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Wall") //벽에 닿으면 (총알에 사용)
+        if(!isMelee && other.tag == "Wall") //벽에 닿으면 (총알에 사용)
             Destroy(gameObject); //자신을 즉시 파괴
 
     }

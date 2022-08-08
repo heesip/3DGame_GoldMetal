@@ -323,6 +323,10 @@ public class Player : MonoBehaviour
             {
                Bullet enemyBullet = other.GetComponent<Bullet>();
                health -= enemyBullet.damage; //몬스터 데미지만큼 체력감소
+                if (other.GetComponent<Rigidbody>() != null)
+                {
+                    Destroy(other.gameObject);
+                }
                StartCoroutine(OnDamaged()); 
             }
         }

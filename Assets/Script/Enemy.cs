@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public BoxCollider meleeArea;//공격 범위
     public bool isChase; //추적하다
     public bool isAttack; //공격
+    public GameObject bullet;
     Rigidbody enemyrigid;
     BoxCollider boxcol;
     Material mat;
@@ -28,7 +29,6 @@ public class Enemy : MonoBehaviour
         mat = GetComponentInChildren<MeshRenderer>().material;
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
-        meleeArea.enabled = false;
 
         Invoke("ChaseStart", 2); //게임이 시작하고 2초가 지나면 추적
     }
@@ -78,6 +78,8 @@ public class Enemy : MonoBehaviour
                 targetRange = 12f;
                 break;
             case Type.C:
+                targetRadius = 0.5f;
+                targetRange = 25f;
                 break;
             default:
                 break;
@@ -127,7 +129,16 @@ public class Enemy : MonoBehaviour
                 break;
 
             case Type.C:
+                //0.5초 후
+                yield return new WaitForSeconds(0.5f);
+                //미사일 생성 및 발사 
+                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+                Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                rigidBullet.velocity = transform.forward * 20;
+                //2초간 멈춤
+                yield return new WaitForSeconds(2f);
                 break;
+
             default:
                 break;
         }

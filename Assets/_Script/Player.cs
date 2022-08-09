@@ -86,18 +86,18 @@ public class Player : MonoBehaviour
 
         if (isDodge)//회피중인 상황이면
             moveVec = dodgeVec; //이동방향을 회피방향으로 고정
-        else if (isSwap || isReload || !isFireReady )//무기 변경중이거나 재장전 중이거나 공격중이라면
+        else if (isSwap || isReload || !isFireReady)//무기 변경중이거나 재장전 중이거나 공격중이라면
             moveVec = Vector3.zero; //움직임 멈춤
 
         //플레이어 위치는 이동하는 값과 스피드를 받아서 반형한다. 걷기 버튼 누르면 0.35배 속도 아니라면 원래 속도로
-        if(!isBorder)//벽에 닿지 않으면 움직이게  
+        if (!isBorder)//벽에 닿지 않으면 움직이게  
             transform.position += moveVec * speed * (playerInput.wDown ? 0.35f : 1f) * Time.deltaTime;
 
         //나아가는 방향을 바라보게 함
         transform.LookAt(transform.position + moveVec);
 
         //공격버튼을 눌렀을때 (마우스에 의한 회전)
-        if (playerInput.fDown) 
+        if (playerInput.fDown)
         {
             //마우스가 위치한곳에 Ray를 쏴줌
             Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
@@ -105,13 +105,13 @@ public class Player : MonoBehaviour
 
             //레이가 닿는곳을 레이캐스트에 넣어줌 레이길이는 100
             if (Physics.Raycast(ray, out rayHit, 100))
-            { 
+            {
                 //레이가 닿은 지점에서 플레이어 위치를 빼서 nextVec에 값을 넣어줌
                 Vector3 nextVec = rayHit.point - transform.position;
                 //높이는 0으로 잡아 캐릭터가 높은 물체를 바라보더라도 기울어지는것을 방지
                 nextVec.y = 0;
                 //nextVec 방향에 맞게 캐릭터가 바라보게 만듬
-                transform.LookAt(transform.position + nextVec); 
+                transform.LookAt(transform.position + nextVec);
             }
         }
 
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
             isReload = true; //재장전 중
             yield return new WaitForSeconds(2.5f); //2.5초 후
             //장전 탄약 = 인벤토리 탄 갯수가 장전가능한 탄 갯수보다 적으면 인벤토리에 있는 탄 전부, 아니라면 장전가능한 탄 갯수
-            int reAmmo = inven.ammo < equipWeapon.maxAmmo ? inven.ammo : equipWeapon.maxAmmo;  
+            int reAmmo = inven.ammo < equipWeapon.maxAmmo ? inven.ammo : equipWeapon.maxAmmo;
             equipWeapon.curAmmo = reAmmo; //장착된 총 현재 탄약을 장전 탄약으로 만듬
             inven.ammo -= reAmmo; //인벤토리에서 탄약 갯수를 장전탄약 갯수 만큼 빼줌
             isReload = false; //재장전 끝
@@ -269,8 +269,8 @@ public class Player : MonoBehaviour
     void Throw() //수류탄 투척 함수
     {
         if (inven.grenade == 0) return; //수류탄이 없으면 실행 X
-        
-        if(playerInput.f2Down && !isReload && !isSwap && !isDodge) //수류탄 투척 전용키를 눌렀을때 재장전, 무기교체, 회피상황이 아닐때
+
+        if (playerInput.f2Down && !isReload && !isSwap && !isDodge) //수류탄 투척 전용키를 눌렀을때 재장전, 무기교체, 회피상황이 아닐때
         {
             //마우스가 위치한곳에 Ray를 쏴줌
             Ray ray = followCamera.ScreenPointToRay(Input.mousePosition);
@@ -284,20 +284,20 @@ public class Player : MonoBehaviour
                 //높이는 2.5으로 잡아 투척을 구현
                 nextVec.y = 17f;
                 //만들어둔 수류탄이 가지고 있는 위치값 회전값을 잡아줌
-                GameObject instantGreanade = Instantiate(inven.hasgrenade, transform.position, transform.rotation); 
+                GameObject instantGreanade = Instantiate(inven.hasgrenade, transform.position, transform.rotation);
                 //수류탄이 가지고 있는 리지드 바디를 통해 물체에게 힘을 가해 날아가게 그리고 회전하게 만들어줌
-                Rigidbody rigidGrenade = instantGreanade.GetComponent<Rigidbody>(); 
+                Rigidbody rigidGrenade = instantGreanade.GetComponent<Rigidbody>();
                 rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
                 rigidGrenade.AddTorque(Vector3.back * 10, ForceMode.Impulse);
 
                 //인벤에서 수류탄 하나 소모
                 inven.grenade--;
-                
+
             }
         }
     }
 
-    IEnumerator OnDamaged() //피격 함수 0.5초 무적시간
+    IEnumerator OnDamaged(bool isBossAtk) //피격 함수 0.5초 무적시간
     {
         isDamage = true;
         foreach (MeshRenderer mesh in meshs)
@@ -305,7 +305,13 @@ public class Player : MonoBehaviour
             mesh.material.color = Color.yellow;
         }
 
-        yield return new WaitForSeconds(0.5f);
+        if(isBossAtk) // 보스 공격이라면
+        {
+            //플레이어를 뒤로 넉백시킴
+            playerRigid.AddForce(transform.forward * -25, ForceMode.Impulse);
+        }
+
+        yield return new WaitForSeconds(1f);
 
         isDamage = false;
         foreach (MeshRenderer mesh in meshs)
@@ -313,21 +319,27 @@ public class Player : MonoBehaviour
             mesh.material.color = Color.white;
         }
 
+        if (isBossAtk)
+            playerRigid.velocity = Vector3.zero;
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "EnemyBullet")
+        if (other.tag == "EnemyBullet")
         {
             if (!isDamage) //피격가능 상황이면
             {
-               Bullet enemyBullet = other.GetComponent<Bullet>();
-               health -= enemyBullet.damage; //몬스터 데미지만큼 체력감소
-                if (other.GetComponent<Rigidbody>() != null)
-                {
-                    Destroy(other.gameObject);
-                }
-               StartCoroutine(OnDamaged()); 
+                Bullet enemyBullet = other.GetComponent<Bullet>();
+                health -= enemyBullet.damage; //몬스터 데미지만큼 체력감소
+                
+                //보스 근접 공격 범위 안에 들어오면 넉백
+                bool isBossAtk = other.name == "Boss Melee Area"; 
+                StartCoroutine(OnDamaged(isBossAtk));
+            }
+            if (other.GetComponent<Rigidbody>() != null) //충돌 오브젝트에 리지드바디가 있으면
+            {
+                Destroy(other.gameObject); //오브젝트 파괴
             }
         }
     }

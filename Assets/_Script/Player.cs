@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     public int coin = 50000;
     public int maxCoin = 9999999;
 
+    public bool isShop;
 
     void Awake()
     {
@@ -145,7 +146,7 @@ public class Player : MonoBehaviour
         //공격 준비는 무기에 할당된 공격속도를 공격딜레이가 넘기면 활성화 
         isFireReady = equipWeapon.rate < fireDelay;
         //공격버튼을 누를때 공격 준비가 되어있는 상황 + 회피와 무기 교체를 하고있지 않으면
-        if (playerInput.fDown && isFireReady && !isDodge && !isSwap && !isReload)
+        if (playerInput.fDown && isFireReady && !isDodge && !isSwap && !isReload && !isShop)
         {
             equipWeapon.Use(); //무기 사용
             //무기 타입이 근접 무기라면 스윙 애니메이션 원거리 무기라면 샷 애니메이션 
@@ -233,6 +234,7 @@ public class Player : MonoBehaviour
             {
                 Shop shop = nearObject.GetComponent<Shop>();
                 shop.Enter(this);
+                isShop = true;
             }
 
         }

@@ -24,6 +24,7 @@ public class Shop : MonoBehaviour
     {
         anim.SetTrigger("doHello");
         uiGroup.anchoredPosition = Vector3.down * 1000;
+        enterPlayer.isShop = false;
     }
 
     public void Buy(int index)

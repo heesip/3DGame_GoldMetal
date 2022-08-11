@@ -22073,7 +22073,7 @@ MonoBehaviour:
   isBorder: 0
   health: 10
   maxHealth: 100
-  coin: 5000
+  coin: 50000
   maxCoin: 9999999
 --- !u!114 &5903297864759275044
 MonoBehaviour:

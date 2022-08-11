@@ -199,6 +199,7 @@ public class Player : MonoBehaviour
             {
                 int weaponIndex = item.value; //아이템이 가지고 있는 값을  무기 인덱스에 넣음
                 inven.hasWeapons[weaponIndex] = true; //해당 값과 동일한 hasWeapons를 활성화
+                Destroy(nearObject); //먹은 오브젝트 필드에서 파괴 
             }
             else if (nearObject.tag == "Item") //가까운 오브젝트 태그가 Item일때
             {
@@ -217,14 +218,20 @@ public class Player : MonoBehaviour
                         if (inven.grenade > inven.maxGrenade) inven.grenade = inven.maxGrenade;
                         break;
                     case Item.Type.Heart:
-                        inven.heart += item.value; //인벤 Grenade에 아이템 값만큼 수량을 추가함
-                        if (inven.heart > inven.maxHeart) inven.heart = inven.maxHeart;
+                        health += item.value; //인벤 Grenade에 아이템 값만큼 수량을 추가함
+                        if (health > maxHealth) health = maxHealth;
                         break;
                     default:
                         break;
                 }
+                Destroy(nearObject); //먹은 오브젝트 필드에서 파괴 
             }
-            Destroy(nearObject); //먹은 오브젝트 필드에서 파괴 
+            
+            else if (nearObject.tag == "Shop")
+            {
+                Shop shop = nearObject.GetComponent<Shop>();
+                shop.Enter(this);
+            }
 
         }
     }
@@ -347,11 +354,12 @@ public class Player : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //플레이어가 무기 혹은 아이템 태그를 가진 오브젝트 범위안에 있다면
-        if (other.tag == "Weapon" || other.tag == "Item")
+        if (other.tag == "Weapon" || other.tag == "Item" || other.tag == "Shop")
         {
             nearObject = other.gameObject; //근처에 있는 아이템을 감지
             Debug.Log(nearObject); //어떤 아이템인지 기록을 엔진에 남겨줌
         }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -360,6 +368,12 @@ public class Player : MonoBehaviour
         if (other.tag == "Weapon" || other.tag == "Item")
         {
             nearObject = null; //플레이어 근처에 있는 아이템감지를 멈춤
+        }
+        else if(other.tag == "Shop")
+        {
+            Shop shop = nearObject.GetComponent<Shop>();
+            shop.Exit();
+            nearObject = null;
         }
     }
 

@@ -10,6 +10,7 @@ public class Shop : MonoBehaviour
     public int[] itemPrice;
     public Transform[] itemPos;
     public Text talkText;
+    public string[] talkData;
 
     Player enterPlayer;
 
@@ -27,6 +28,27 @@ public class Shop : MonoBehaviour
 
     public void Buy(int index)
     {
-        
+        int price = itemPrice[index];
+        if(price > enterPlayer.coin)
+        {
+            StopCoroutine(Talk());
+            StartCoroutine(Talk());
+            return;
+        }
+
+        enterPlayer.coin -= price;
+        Vector3 ranVec = Vector3.right * Random.Range(-3, 3)
+            + Vector3.forward * Random.Range(-3, 3);
+
+        Instantiate(itemObj[index], itemPos[index].position + ranVec, itemPos[index].rotation);
+
+    }
+
+
+    IEnumerator Talk()
+    {
+        talkText.text = talkData[1];
+        yield return new WaitForSeconds(3);
+        talkText.text = talkData[0];
     }
 }

@@ -30,9 +30,11 @@ public class Player : MonoBehaviour
     public bool isBorder;
 
     public int health;
-    public int maxHealth;
+    public int maxHealth = 100;
     bool isDamage;
     MeshRenderer[] meshs;
+    public int coin = 50000;
+    public int maxCoin = 9999999;
 
 
     void Awake()
@@ -210,8 +212,8 @@ public class Player : MonoBehaviour
                         if (inven.ammo > inven.maxAmmo) inven.ammo = inven.maxAmmo;
                         break;
                     case Item.Type.Coin:
-                        inven.coin += item.value; //인벤 Coin에 아이템 값만큼 수량을 추가함
-                        if (inven.coin > inven.maxCoin) inven.coin = inven.maxCoin;
+                        coin += item.value; //인벤 Coin에 아이템 값만큼 수량을 추가함
+                        if (coin > maxCoin) coin = maxCoin;
                         break;
                     case Item.Type.Grenade:
                         inven.grenade += item.value; //인벤 Grenade에 아이템 값만큼 수량을 추가함

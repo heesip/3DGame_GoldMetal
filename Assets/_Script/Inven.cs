@@ -9,10 +9,8 @@ public class Inven : MonoBehaviour
     public GameObject hasgrenade; //사용할 수류탄
 
     public int ammo;    //총알
-    public int coin;    //동전 
     public int grenade; //수류탄
 
     public int maxAmmo = 999;   //총알 최대치
-    public int maxCoin = 99999; //동전 최대치
     public int maxGrenade = 9;  //수류탄 최대치  
 }

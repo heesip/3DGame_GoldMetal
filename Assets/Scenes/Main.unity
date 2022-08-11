@@ -303,7 +303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56448295}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: -5}
+  m_LocalPosition: {x: -18.23, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1947,7 +1947,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344654656}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: -5}
+  m_LocalPosition: {x: 18.59, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2436,7 +2436,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 415603696}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1299804640}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &415603696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2939,7 +2951,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 563781070}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 5}
+  m_LocalPosition: {x: 18.59, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5670,7 +5682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963969886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 5}
+  m_LocalPosition: {x: -18.23, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5928,7 +5940,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 994280474}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1795180125}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &994280474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6873,7 +6897,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1140397183}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1795180125}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1140397183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12140,6 +12176,9 @@ MonoBehaviour:
   - {fileID: 1940960880}
   - {fileID: 344654657}
   talkText: {fileID: 238176375}
+  talkData:
+  - "\uB0B4\uAC00 \uB9CC\uB4E0 \uBB34\uAE30\uAC00 \uCD5C\uACE0\uB77C\uACE0!"
+  - "\uC790\uB124 \uB3C8\uC774 \uBD80\uC871\uD558\uAD70!"
 --- !u!135 &1299804641
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -12444,7 +12483,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333843727}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 0, z: 0}
+  m_LocalPosition: {x: -18.23, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12767,7 +12806,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1438781418}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1299804640}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1438781418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13552,7 +13603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 85, y: 56}
+  m_AnchoredPosition: {x: 85.00006, y: 56.000122}
   m_SizeDelta: {x: -170, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1565114812
@@ -13945,7 +13996,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1611944671}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1795180125}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1611944671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15175,7 +15238,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1778187773}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1299804640}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1778187773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20083,6 +20158,9 @@ MonoBehaviour:
   - {fileID: 1333843728}
   - {fileID: 56448296}
   talkText: {fileID: 1565114812}
+  talkData:
+  - "\uC18C\uBAA8\uD488\uC740 \uD56D\uC0C1 \uB4E0\uB4E0\uD558\uAC8C \uCC59\uACA8\uC57C\uC9C0!"
+  - "\uB108 \uB3C8\uC774 \uBD80\uC871\uD55C\uB370? \uB354 \uBC8C\uACE0\uC640!"
 --- !u!135 &1795180126
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -20609,7 +20687,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1940960879}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 0}
+  m_LocalPosition: {x: 18.59, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21994,7 +22072,9 @@ MonoBehaviour:
   followCamera: {fileID: 963194227}
   isBorder: 0
   health: 10
-  maxHealth: 10
+  maxHealth: 100
+  coin: 5000
+  maxCoin: 9999999
 --- !u!114 &5903297864759275044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22038,13 +22118,9 @@ MonoBehaviour:
   hasWeapons: 000000
   hasgrenade: {fileID: 8519953198907138742, guid: b5dd412f1a0d8594f827a48b73397d11, type: 3}
   ammo: 0
-  coin: 0
   grenade: 0
-  heart: 0
   maxAmmo: 999
-  maxCoin: 99999
   maxGrenade: 9
-  maxHeart: 9
 --- !u!33 &5994928335351607503
 MeshFilter:
   m_ObjectHideFlags: 0
